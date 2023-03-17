@@ -74,7 +74,7 @@ public class ApplicationTest {
         }
         assertNull(r);
 
-        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "eri", "eri")) {
+        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pg_db", "eri", "eri")) {
             Statement s = con.createStatement();
             ResultSet rs = s.executeQuery("SELECT * FROM MEAL");
             assertTrue("empty result set", rs.next());            
@@ -94,7 +94,7 @@ public class ApplicationTest {
         Long r1 = Application.noveJedlo("P3", null);
         assertNotNull("null returned",r1);
 
-        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "eri", "eri")) {
+        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pg_db", "eri", "eri")) {
             Statement s = con.createStatement();
             ResultSet rs = s.executeQuery("SELECT * FROM MEAL");
             assertTrue("empty result set", rs.next());            
@@ -114,7 +114,7 @@ public class ApplicationTest {
         Long r1 = Application.noveJedlo(null, 0.0);
         assertNotNull("null returned",r1);
 
-        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "eri", "eri")) {
+        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pg_db", "eri", "eri")) {
             Statement s = con.createStatement();
             ResultSet rs = s.executeQuery("SELECT * FROM MEAL");
             assertTrue("empty result set", rs.next());            
@@ -150,7 +150,7 @@ public class ApplicationTest {
         prepareTables1();
         Application.odstranJedla();
 
-        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "eri", "eri")) {
+        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pg_db", "eri", "eri")) {
             Statement s = con.createStatement();
             ResultSet rs = s.executeQuery("SELECT count(*) FROM MEAL");
             assertTrue("empty result set", rs.next());            
@@ -159,9 +159,9 @@ public class ApplicationTest {
             rs = s.executeQuery("SELECT * FROM MEAL WHERE id = 1111");
             assertTrue("empty result set", rs.next());            
             rs = s.executeQuery("SELECT * FROM MEAL WHERE id = 1122");
-            assertTrue("empty result set", rs.next());            
+            assertFalse("record not removed", rs.next());
             rs = s.executeQuery("SELECT * FROM MEAL WHERE id = 1133");
-            assertFalse("record not removed", rs.next());            
+            assertTrue("empty result set", rs.next());
         } catch (SQLException ex) {
             fail("SQLException: " + ex.getMessage());
         }
@@ -185,7 +185,7 @@ public class ApplicationTest {
         
         Application.odstranJedla();
 
-        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "eri", "eri")) {
+        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pg_db", "eri", "eri")) {
             Statement s = con.createStatement();
             
             ResultSet rs = s.executeQuery("SELECT count(*) FROM MEAL");
@@ -229,7 +229,7 @@ public class ApplicationTest {
 
     static private void prepareTables0() {
 
-        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "eri", "eri")) {
+        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pg_db", "eri", "eri")) {
 
             Statement st = con.createStatement();
 //            System.out.println("IKO dropping ...");
@@ -244,7 +244,7 @@ public class ApplicationTest {
     
     static private void prepareTables1() {
 
-        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "eri", "eri")) {
+        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pg_db", "eri", "eri")) {
 
             Statement st = con.createStatement();
 //            System.out.println("IKO dropping ...");
@@ -264,7 +264,7 @@ public class ApplicationTest {
     
     static private void prepareTables2() {
 
-        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "eri", "eri")) {
+        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pg_db", "eri", "eri")) {
 
             Statement st = con.createStatement();
 //            System.out.println("IKO dropping ...");
